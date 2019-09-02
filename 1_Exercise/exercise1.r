@@ -9,7 +9,7 @@ for(pkg in pkgs){
     library(pkg, character.only = TRUE)
 }
 
-set.seed(100219) # set starting value for random number generator
+set.seed(10101) # set starting value for random number generator
 
 print('All packages successfully installed and loaded.')
 
@@ -152,7 +152,7 @@ glmcoef<-coef(lasso.linear,lasso.linear$lambda.1se)
 coef.increase<-dimnames(glmcoef[glmcoef[,1]>0,0])[[1]]
 coef.decrease<-dimnames(glmcoef[glmcoef[,1]<0,0])[[1]]
 
-lambda_min =  lasso.linear$glmnet.fit$lambda[26]/lasso.linear$glmnet.fit$lambda[1]
+lambda_min =  lasso.linear$glmnet.fit$lambda[29]/lasso.linear$glmnet.fit$lambda[1]
 set.seed(10101)
 mod <- glmnet(covariates_obs, first_price_obs, lambda.min.ratio = lambda_min, alpha=p)
 maxcoef<-coef(mod,s=lambda_min)
@@ -312,8 +312,8 @@ print(paste0("Out-of-Sample R-squared Lasso (lambda.1se): ", rsquared3_out))
 print(paste0("Out-of-Sample MSE Honest Lassso (lambda.1se): ", mse4_out))
 print(paste0("Out-of-Sample R-squared Honest Lasso (lambda.1se): ", rsquared4_out))
 
-print(paste0("Out-of-Sample MSE Honest Lassso (lambda.1se): ", mse5_out))
-print(paste0("Out-of-Sample R-squared Honest Lasso (lambda.1se): ", rsquared5_out))
+print(paste0("Out-of-Sample MSE Cross-Fitted Honest Lassso (lambda.1se): ", mse5_out))
+print(paste0("Out-of-Sample R-squared Cross-Fitted Honest Lasso (lambda.1se): ", rsquared5_out))
 
 
 
