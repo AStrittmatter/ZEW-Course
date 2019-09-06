@@ -20,7 +20,7 @@ print('All packages successfully installed and loaded.')
 data_raw <- read.csv("Data/used_cars.csv",header=TRUE, sep=",")
 
 # Outcome Variable
-outcomes <- c("first_price", "overprice")
+outcomes <- c("first_price", "final_price")
 
 # Covariates/Features
 covariates <- c("mileage", "age_car_years", "other_car_owner", "co2_em", "euro_norm", "inspection", 
@@ -55,8 +55,8 @@ df_hold_out <- as.data.frame(df_part$hold_out) # Hold-out-sample
 # Outcomes
 first_price_obs <- as.matrix(df_obs[,1])
 first_price_hold_out <- as.matrix(df_hold_out[,1])
-overprice_obs <- as.matrix(df_obs[,2])
-overprice_hold_out <- as.matrix(df_hold_out[,2])
+final_price_obs <- as.matrix(df_obs[,2])
+final_price_hold_out <- as.matrix(df_hold_out[,2])
 
 # Covariates/Features
 covariates_obs <- as.matrix(df_obs[,c(3:ncol(df_obs))])
@@ -76,6 +76,8 @@ forest <- regression_forest(covariates_obs, first_price_obs,
 
 fit_in <- predict(forest)$predictions
 fit_out <- predict(forest, newdata =covariates_hold_out)$predictions
+
+print('Forest was build.')
 
 
 # In-sample performance measures
@@ -134,9 +136,6 @@ lines(auc[c(2:nrow(auc)),1], predict(nls_fit), col = "red")
 abline(h=0)
 
 
-
-
-
 ########################  Random Forest for "Overpice"  ######################## 
 
 forest <- ???
@@ -145,15 +144,16 @@ fit_in <- ???
 fit_out <- ???
 
 # In-sample performance measures
-mse2_in <- round(mean((overprice_obs - fit_in)^2),digits=3)
-rsquared2_in <- round(1-mean((overprice_obs - fit_in)^2)/mean((overprice_obs - mean(overprice_obs))^2),digits=3)
+mse2_in <- round(mean((final_price_obs - fit_in)^2),digits=3)
+rsquared2_in <- round(1-mean((final_price_obs - fit_in)^2)/mean((final_price_obs - mean(final_price_obs))^2),digits=3)
 print(paste0("In-Sample MSE Forest: ", mse2_in))
 print(paste0("In-Sample R-squared Forest: ", rsquared2_in))
 
 # Out-of-sample performance measures
-mse2_out <- round(mean((overprice_hold_out - fit_out)^2),digits=3)
-rsquared2_out <- round(1-mean((overprice_hold_out - fit_out)^2)/mean((overprice_hold_out - mean(overprice_hold_out))^2),digits=3)
+mse2_out <- round(mean((final_price_hold_out - fit_out)^2),digits=3)
+rsquared2_out <- round(1-mean((final_price_hold_out - fit_out)^2)/mean((final_price_hold_out - mean(final_price_hold_out))^2),digits=3)
 print(paste0("Out-of-Sample MSE Forest: ", mse2_out))
 print(paste0("Out-of-Sample R-squared Forest: ", rsquared2_out))
+
 
 
